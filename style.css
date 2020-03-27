@@ -1,0 +1,49 @@
+button{
+    border: solid 1px #299fff;
+    padding: 10px 20px;
+    color: #299fff;
+}
+
+button:hover{
+    cursor: pointer;
+    color: white;
+    background-color: #299fff;
+}
+
+.content{
+    text-align: center;
+    margin-top: 40px;
+}
+
+.addContainer{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.todoList{
+    min-width: 400px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.elemContainer{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.elemContainer span{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    padding: 5px;
+    padding-top: 10px;
+}
+
+#newTaskField{
+    width: 506px;
+    padding: 9px 10px;
+}
