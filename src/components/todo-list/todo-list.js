@@ -14,16 +14,9 @@ class TodoList extends React.Component{
 		);
 	}
 	
-
 	render(){
-		/*if(this.props.searchFilter){
-			console.log("sf");
-			const elements = this.props.searchFilter.map(item => this.createTodoItem(item));
-			return <ul className='list-group todo-list'>{elements}</ul>;
-		} else {*/
-			const elements = this.props.todos.map(item => this.createTodoItem(item));
-			return <ul className='list-group todo-list'>{elements}</ul>;
-		//}
+		const elements = this.props.todos.map(item => this.createTodoItem(item));
+		return <ul className='list-group todo-list'>{elements}</ul>;
 	}
 }
 

@@ -11,6 +11,7 @@ import './app.css';
 class App extends React.Component {	
 	maxId = 100;
 	searchFilter = '';
+	btnFilter = '';
 
 	state = {
 		todoData: [
@@ -25,10 +26,27 @@ class App extends React.Component {
 		this.forceUpdate(); // без этого не рендерит, хотя props изменяется
 	}
 
-	searchTodo(label){
-		return this.state.todoData.filter(todo => 
-			todo.label.toLowerCase().indexOf(label) !== -1);
+	searchFilterTodo(array){
+		return array.filter(todo => 
+			todo.label.toLowerCase().indexOf(this.searchFilter) !== -1);
 	}
+
+	onClickFillter = (id) => {
+		if(id === 'activeBtn')
+			this.btnFilter = true;
+		if(id === 'doneBtn')
+			this.btnFilter = false;
+		if(id === 'allBtn'){
+			this.btnFilter = '';
+		}
+		this.forceUpdate();
+	}
+
+	btnFilterTodo(array){
+		return array.filter(todo => 
+			todo.done !== this.btnFilter);
+	}
+
 
 	onDelete = (id) => {
 		this.setState((prevState) => {
@@ -42,7 +60,7 @@ class App extends React.Component {
 	onAdd = (label) => {
 		this.setState((prev) => {
 			return{
-				todoData: [...prev.todoData, {label, important: false, id: ++this.maxId}]
+				todoData: [...prev.todoData, {label, important: false, id: ++this.maxId, done: false}]
 			}
 		});
 	}
@@ -62,9 +80,9 @@ class App extends React.Component {
 	}
 
 	render(){
-		const searchFilter = this.state.todoData.filter(todo => 
-			todo.label.toLowerCase().indexOf(this.searchFilter) !== -1);
-		const {todoData} = {todoData: searchFilter};
+		const searchFilter = this.searchFilterTodo(this.state.todoData);
+		const btnFilter = this.btnFilterTodo(searchFilter);
+		const {todoData} = {todoData: btnFilter};
 		const done = todoData.filter((todo) => todo.done).length;
 		const toDo = todoData.length - done;
 		return (
@@ -72,7 +90,7 @@ class App extends React.Component {
 				<AppHeader toDo={toDo} done={done} />
 				<div className='top-panel d-flex'>
 					<SearchPanel onInput={this.onInput}/>
-					<ItemStatusFilter />
+					<ItemStatusFilter onClickFilter={this.onClickFillter}/>
 				</div>
 	
 				<TodoList todos={todoData} onDelete={this.onDelete} onToggle={this.onToggle} />

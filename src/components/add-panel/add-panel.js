@@ -9,7 +9,6 @@ class AddPanel extends React.Component {
 
     onChange(e){
         this.setState({label: e.target.value});
-        console.log(this.state.label)
     }
 
     onSubmit = (e) => {
