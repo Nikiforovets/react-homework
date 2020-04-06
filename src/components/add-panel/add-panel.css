@@ -1,0 +1,9 @@
+.add-panel{
+    width: auto;
+    flex-grow: 1;
+    margin-top: 10px;
+}
+
+.add-panel button{
+    padding: 10px;
+}

@@ -1,0 +1,30 @@
+import React from 'react';
+
+import TodoListItem from '../todo-list-item';
+import './todo-list.css';
+
+class TodoList extends React.Component{
+
+	createTodoItem(item){
+		const { id, ...itemProps } = item;
+		return (
+			<li key={id} className='list-group-item'>
+				<TodoListItem {...itemProps} onToggle={() => this.props.onToggle(id)} onDelete={() => this.props.onDelete(id)} />
+			</li>
+		);
+	}
+	
+
+	render(){
+		/*if(this.props.searchFilter){
+			console.log("sf");
+			const elements = this.props.searchFilter.map(item => this.createTodoItem(item));
+			return <ul className='list-group todo-list'>{elements}</ul>;
+		} else {*/
+			const elements = this.props.todos.map(item => this.createTodoItem(item));
+			return <ul className='list-group todo-list'>{elements}</ul>;
+		//}
+	}
+}
+
+export default TodoList;
