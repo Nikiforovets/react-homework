@@ -9,7 +9,7 @@ class TodoList extends React.Component{
 		const { id, ...itemProps } = item;
 		return (
 			<li key={id} className='list-group-item'>
-				<TodoListItem {...itemProps} onToggle={() => this.props.onToggle(id)} onDelete={() => this.props.onDelete(id)} />
+				<TodoListItem {...itemProps} onToggle={() => this.props.onToggle(id)} onDelete={() => this.props.onDelete(id)} onImportant={() => this.props.onImportant(id)} />
 			</li>
 		);
 	}

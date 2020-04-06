@@ -11,6 +11,10 @@ class TodoListItem extends Component {
 		this.props.onDelete();
 	}
 
+	importantHandler(){
+		this.props.onImportant();
+	}
+
 	render() {
 		const { important = false, label, done } = this.props;
 
@@ -38,15 +42,14 @@ class TodoListItem extends Component {
 				<button
 					type='button'
 					className='btn btn-outline-success btn-sm float-right'
-				>
+					onClick={() => this.importantHandler()}>
 					<i className='fa fa-exclamation' />
 				</button>
 
 				<button
 					type='button'
 					className='btn btn-outline-danger btn-sm float-right'
-					onClick={() => this.removeHandler()}
-				>
+					onClick={() => this.removeHandler()}>
 					<i className='fa fa-trash-o' />
 				</button>
 			</span>

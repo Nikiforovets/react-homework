@@ -23,7 +23,7 @@ class App extends React.Component {
 
 	onInput = (label) => {
 		this.searchFilter = label;
-		this.forceUpdate(); // без этого не рендерит, хотя props изменяется
+		this.forceUpdate(); // не уверен что не костыль
 	}
 
 	searchFilterTodo(array){
@@ -39,7 +39,7 @@ class App extends React.Component {
 		if(id === 'allBtn'){
 			this.btnFilter = '';
 		}
-		this.forceUpdate();
+		this.forceUpdate(); // не уверен что не костыль
 	}
 
 	btnFilterTodo(array){
@@ -56,6 +56,17 @@ class App extends React.Component {
 			};
 		});
 	};
+
+	onImportant = (id) => {
+		console.log(id);
+		this.setState((prevState) => {
+			const todo = prevState.todoData.find(todo => todo.id === id);
+			todo.important = !todo.important;
+			return{
+				prevState
+			};
+		});
+	}
 
 	onAdd = (label) => {
 		this.setState((prev) => {
@@ -93,7 +104,7 @@ class App extends React.Component {
 					<ItemStatusFilter onClickFilter={this.onClickFillter}/>
 				</div>
 	
-				<TodoList todos={todoData} onDelete={this.onDelete} onToggle={this.onToggle} />
+				<TodoList todos={todoData} onImportant={this.onImportant} onDelete={this.onDelete} onToggle={this.onToggle} />
 				<AddPanel onAdd={this.onAdd}/>
 			</div>
 		);
