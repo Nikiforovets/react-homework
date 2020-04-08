@@ -10,41 +10,46 @@ import './app.css';
 
 class App extends React.Component {	
 	maxId = 100;
-	searchFilter = '';
-	btnFilter = '';
 
 	state = {
 		todoData: [
 			{ label: 'Drink Coffee', important: false, id: 1, done: false },
 			{ label: 'Make Awesome App', important: true, id: 2, done: false },
 			{ label: 'Have a lunch', important: false, id: 3, done: false }
-		]
+		],
+		searchFilter: '',
+		btnFilter: ''
 	}
 
 	onInput = (label) => {
-		this.searchFilter = label;
-		this.forceUpdate(); // не уверен что не костыль
+		this.setState(() => {
+			return{
+				searchFilter: label
+			}
+		});
 	}
 
 	searchFilterTodo(array){
 		return array.filter(todo => 
-			todo.label.toLowerCase().indexOf(this.searchFilter) !== -1);
+			todo.label.toLowerCase().indexOf(this.state.searchFilter) !== -1);
 	}
 
 	onClickFillter = (id) => {
-		if(id === 'activeBtn')
-			this.btnFilter = true;
-		if(id === 'doneBtn')
-			this.btnFilter = false;
-		if(id === 'allBtn'){
-			this.btnFilter = '';
-		}
-		this.forceUpdate(); // не уверен что не костыль
+		this.setState(() => {
+				if(id === 'activeBtn')
+					return {btnFilter: true};
+				if(id === 'doneBtn')
+					return {btnFilter: false};
+				if(id === 'allBtn'){
+					return {btnFilter: ''};
+				}
+			}
+		);
 	}
 
 	btnFilterTodo(array){
 		return array.filter(todo => 
-			todo.done !== this.btnFilter);
+			todo.done !== this.state.btnFilter);
 	}
 
 
