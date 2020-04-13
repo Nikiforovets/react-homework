@@ -1,0 +1,12 @@
+.pageLabel{
+    text-align: center;
+}
+
+.pageName{
+    font-weight: 500;
+}
+
+.signinLink{
+    color: rgb(92, 182, 40);
+    font-weight: 400;
+}
