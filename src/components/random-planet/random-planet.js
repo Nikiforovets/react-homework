@@ -26,11 +26,10 @@ export default class RandomPlanet extends Component {
       loading: false,
       networkError: false
     });
-    console.log(planet);
   };
 
   updatePlanet() {
-    const id = 3;
+    const id = 100;
     this.swapiService
       .getPlanet(id)
       .then(this.onPlanetLoaded)
