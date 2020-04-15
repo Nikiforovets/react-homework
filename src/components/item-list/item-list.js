@@ -14,8 +14,7 @@ export default class ItemList extends Component {
     error: false
   };
 
-  constructor() {
-    super();
+  componentDidMount() {
     this.updatePeople();
   }
 
@@ -37,7 +36,14 @@ export default class ItemList extends Component {
   }
 
   createItem(item) {
-    return <Item id={item.id} name={item.name} key={item.id} />;
+    return (
+      <Item
+        id={item.id}
+        name={item.name}
+        key={item.id}
+        onSelectedItem={this.props.onSelectedItem}
+      />
+    );
   }
 
   render() {
