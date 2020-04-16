@@ -10,24 +10,14 @@ export default class ItemList extends Component {
   swapiService = new SwapiService();
 
   state = {
-    people: [],
+    items: [],
     error: false
   };
 
   componentDidMount() {
-    this.updatePeople();
-  }
-
-  onPeopleLoad = people => {
-    this.setState({
-      people: people
-    });
-  };
-
-  updatePeople() {
-    this.swapiService
-      .getAllPeople()
-      .then(this.onPeopleLoad)
+    this.props
+      .getData()
+      .then(this.onItemsLoad)
       .catch(e =>
         this.setState({
           error: true
@@ -35,20 +25,33 @@ export default class ItemList extends Component {
       );
   }
 
+  onItemsLoad = items => {
+    this.setState({
+      items: items
+    });
+  };
+
   createItem(item) {
     return (
-      <Item
-        id={item.id}
-        name={item.name}
+      // <Item
+      //   id={item.id}
+      //   name={item.name}
+      //   key={item.id}
+      //   onSelectedItem={this.props.onSelectedItem}
+      // />
+      <li
+        className="list-group-item"
         key={item.id}
-        onSelectedItem={this.props.onSelectedItem}
-      />
+        onClick={() => this.props.onSelectedItem(item.id)}
+      >
+        {this.props.children(item)}
+      </li>
     );
   }
 
   render() {
     const elements = !this.state.error
-      ? this.state.people.map(item => this.createItem(item))
+      ? this.state.items.map(item => this.createItem(item))
       : null;
     const error = this.state.error ? <NetworkError /> : null;
     return (

@@ -2,23 +2,31 @@ import React from "react";
 
 import Header from "../header";
 import RandomPlanet from "../random-planet";
-import ItemList from "../item-list";
-import PersonDetails from "../person-details";
 import ErrorButton from "../error-button";
+import SwapiService from "../../services/swapi-service";
+import PeoplePage from "../people-page";
+import ItemDetails from "../item-details";
+import ItemList from "../item-list";
+import Row from "../row";
+import ErrorBoundry from "../error-boundry";
 
 import "./app.css";
 
-class App extends React.Component {
-  state = {
-    selectedItem: null,
-    error: false
-  };
+const Record = ({ item, field, label }) => {
+  return (
+    <li className="list-group-item">
+      <span className="term">{label}</span>
+      <span>{item[field]}</span>
+    </li>
+  );
+};
 
-  componentDidCatch() {
-    this.setState({
-      error: true
-    });
-  }
+class App extends React.Component {
+  swapiService = new SwapiService();
+
+  state = {
+    selectedItem: null
+  };
 
   onSelectedItem = id => {
     this.setState({
@@ -27,22 +35,36 @@ class App extends React.Component {
   };
 
   render() {
-    if (this.state.error) {
-      return <h1>Error (The death star)</h1>;
-    }
+    const peopleList = (
+      <ItemList
+        getData={this.swapiService.getAllPeople}
+        onSelectedItem={this.onSelectedItem}
+      >
+        {item => `${item.name} | ${item.gender}`}
+      </ItemList>
+    );
+    const peopleDetails = (
+      <ErrorBoundry>
+        <ItemDetails
+          selectedItem={this.state.selectedItem}
+          getData={this.swapiService.getPerson}
+          getImage={id => this.swapiService.getPersonImage(id)}
+        >
+          <Record label="Name" field="name" />
+          <Record label="Gender" field="gender" />
+          <Record label="Birth year" field="birthYear" />
+          <Record label="Eye Color" field="eyeColor" />
+        </ItemDetails>
+      </ErrorBoundry>
+    );
     return (
       <div>
-        <Header />
-        <RandomPlanet />
-        <ErrorButton />
-        <div className="row mb2">
-          <div className="col-md-6">
-            <ItemList onSelectedItem={this.onSelectedItem} />
-          </div>
-          <div className="col-md-6">
-            <PersonDetails selectedItem={this.state.selectedItem} />
-          </div>
-        </div>
+        <ErrorBoundry>
+          <Header />
+          <RandomPlanet />
+          <ErrorButton />
+          <Row left={peopleList} right={peopleDetails} />
+        </ErrorBoundry>
       </div>
     );
   }
