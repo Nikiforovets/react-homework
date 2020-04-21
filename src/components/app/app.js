@@ -4,9 +4,18 @@ import Header from "../header";
 import RandomPlanet from "../random-planet";
 import ErrorButton from "../error-button";
 import SwapiService from "../../services/swapi-service";
-import PeoplePage from "../people-page";
 import ItemDetails from "../item-details";
-import ItemList from "../item-list";
+//import ItemList from "../item-list";
+import { SwapiServiceProvider, SwapiServiceConsumer } from "../../cotext";
+import {
+  PersonList,
+  PersonDetails,
+  PlanetList,
+  PlanetDetails,
+  StarshipDetails,
+  StarshipList
+} from "../sw-conponents";
+import { withComponentError } from "../../hocs";
 import Row from "../row";
 import ErrorBoundry from "../error-boundry";
 
@@ -21,51 +30,62 @@ const Record = ({ item, field, label }) => {
   );
 };
 
+export { Record };
+
 class App extends React.Component {
   swapiService = new SwapiService();
 
   state = {
-    selectedItem: null
+    selectedPerson: null,
+    selectedPlanet: null,
+    selectedStarship: null
   };
 
-  onSelectedItem = id => {
+  onSelectedPerson = id => {
     this.setState({
-      selectedItem: id
+      selectedPerson: id
+    });
+  };
+
+  onSelectedPlanet = id => {
+    this.setState({
+      selectedPlanet: id
+    });
+  };
+
+  onSelectedStarship = id => {
+    this.setState({
+      selectedStarship: id
     });
   };
 
   render() {
-    const peopleList = (
-      <ItemList
-        getData={this.swapiService.getAllPeople}
-        onSelectedItem={this.onSelectedItem}
-      >
-        {item => `${item.name} | ${item.gender}`}
-      </ItemList>
+    const peopleList = <PersonList onSelectedItem={this.onSelectedPerson} />;
+    const peopleDetails = withComponentError(
+      <PersonDetails itemId={this.state.selectedPerson} />
     );
-    const peopleDetails = (
-      <ErrorBoundry>
-        <ItemDetails
-          selectedItem={this.state.selectedItem}
-          getData={this.swapiService.getPerson}
-          getImage={id => this.swapiService.getPersonImage(id)}
-        >
-          <Record label="Name" field="name" />
-          <Record label="Gender" field="gender" />
-          <Record label="Birth year" field="birthYear" />
-          <Record label="Eye Color" field="eyeColor" />
-        </ItemDetails>
-      </ErrorBoundry>
+
+    const planetList = <PlanetList onSelectedItem={this.onSelectedPlanet} />;
+    const planetDetails = withComponentError(
+      <PlanetDetails itemId={this.state.selectedPlanet} />
     );
-    return (
-      <div>
-        <ErrorBoundry>
-          <Header />
-          <RandomPlanet />
-          <ErrorButton />
-          <Row left={peopleList} right={peopleDetails} />
-        </ErrorBoundry>
-      </div>
+
+    const starshipList = (
+      <StarshipList onSelectedItem={this.onSelectedStarship} />
+    );
+    const starshipDetails = withComponentError(
+      <StarshipDetails itemId={this.state.selectedStarship} />
+    );
+
+    return withComponentError(
+      <SwapiServiceProvider value={this.swapiService}>
+        <Header />
+        <RandomPlanet />
+        <ErrorButton />
+        <Row left={peopleList} right={peopleDetails} />
+        <Row left={planetList} right={planetDetails} />
+        <Row left={starshipList} right={starshipDetails} />
+      </SwapiServiceProvider>
     );
   }
 }
