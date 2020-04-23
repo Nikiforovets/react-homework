@@ -4,20 +4,16 @@ import Header from "../header";
 import RandomPlanet from "../random-planet";
 import ErrorButton from "../error-button";
 import SwapiService from "../../services/swapi-service";
-import ItemDetails from "../item-details";
-//import ItemList from "../item-list";
+import PeoplePage from "../people-page";
+import PersonPage from "../person-page";
+import PlanetPage from "../planet-page";
+import StarsipPage from "../starship-page";
+import StarsipPersonalPage from "../starship-personal-page";
 import { SwapiServiceProvider, SwapiServiceConsumer } from "../../cotext";
-import {
-  PersonList,
-  PersonDetails,
-  PlanetList,
-  PlanetDetails,
-  StarshipDetails,
-  StarshipList
-} from "../sw-conponents";
+
 import { withComponentError } from "../../hocs";
-import Row from "../row";
-import ErrorBoundry from "../error-boundry";
+
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./app.css";
 
@@ -36,55 +32,27 @@ class App extends React.Component {
   swapiService = new SwapiService();
 
   state = {
-    selectedPerson: null,
-    selectedPlanet: null,
-    selectedStarship: null
-  };
-
-  onSelectedPerson = id => {
-    this.setState({
-      selectedPerson: id
-    });
-  };
-
-  onSelectedPlanet = id => {
-    this.setState({
-      selectedPlanet: id
-    });
-  };
-
-  onSelectedStarship = id => {
-    this.setState({
-      selectedStarship: id
-    });
+    isLoggedIn: false
   };
 
   render() {
-    const peopleList = <PersonList onSelectedItem={this.onSelectedPerson} />;
-    const peopleDetails = withComponentError(
-      <PersonDetails itemId={this.state.selectedPerson} />
-    );
-
-    const planetList = <PlanetList onSelectedItem={this.onSelectedPlanet} />;
-    const planetDetails = withComponentError(
-      <PlanetDetails itemId={this.state.selectedPlanet} />
-    );
-
-    const starshipList = (
-      <StarshipList onSelectedItem={this.onSelectedStarship} />
-    );
-    const starshipDetails = withComponentError(
-      <StarshipDetails itemId={this.state.selectedStarship} />
-    );
-
     return withComponentError(
       <SwapiServiceProvider value={this.swapiService}>
-        <Header />
-        <RandomPlanet />
-        <ErrorButton />
-        <Row left={peopleList} right={peopleDetails} />
-        <Row left={planetList} right={planetDetails} />
-        <Row left={starshipList} right={starshipDetails} />
+        <Router>
+          <div>
+            <Header />
+            <RandomPlanet />
+            <Switch>
+              <Route path="/" render={() => <h1>Welcome</h1>} exact />
+              <Route path="/people" component={PeoplePage} exact />
+              <Route path="/people/:id" component={PersonPage} />
+              <Route path="/planets/:id?" component={PlanetPage} />
+              <Route path="/starships" component={StarsipPage} exact />
+              <Route path="/starships/:id" component={StarsipPersonalPage} />
+              <Route render={() => <h1>Page not fond</h1>} />
+            </Switch>
+          </div>
+        </Router>
       </SwapiServiceProvider>
     );
   }

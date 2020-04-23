@@ -8,7 +8,6 @@ export default class ErrorBoundry extends React.Component {
     this.setState({ error: true });
   }
   render() {
-    console.log(this.props);
     if (this.state.error) {
       return <h1>Error (The death star)</h1>;
     }

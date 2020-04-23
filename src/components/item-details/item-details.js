@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import "./item-details.css";
 import Spinner from "../spinner";
 import ErrorButton from "../error-button";
@@ -8,6 +9,14 @@ export default class ItemDetails extends Component {
     data: {},
     loading: false
   };
+
+  // static defaultProps = {
+  //   itemId: 2
+  // };
+
+  componentDidMount() {
+    this.updateComponent();
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.itemId !== this.props.itemId) {
@@ -30,7 +39,7 @@ export default class ItemDetails extends Component {
     const { id, name, gender, eyeColor, birthYear } = item;
     if (item.id) {
       return (
-        <>
+        <div>
           <ErrorButton />
           <div className="person-details card">
             <img className="person-image" src={this.props.getImageUrl(id)} />
@@ -46,7 +55,7 @@ export default class ItemDetails extends Component {
               }
             </div>
           </div>
-        </>
+        </div>
       );
     }
     return null;
@@ -59,3 +68,20 @@ export default class ItemDetails extends Component {
     return this.renderCard();
   }
 }
+
+ItemDetails.defaultProps = {
+  itemId: 2
+};
+
+// ItemDetails.propTypes = {
+//   itemId: (props, propName, componentName) => {
+//     if (typeof props[propName] === "number") {
+//       return null;
+//     }
+//     return new TypeError(`${componentName} - ${propName} must be number`);
+//   }
+// };
+
+ItemDetails.propTypes = {
+  itemId: PropTypes.number
+};
