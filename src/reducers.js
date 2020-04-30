@@ -18,13 +18,6 @@ const reducer = (state = initialState, action) => {
         id: state.todoData.length + 1,
         done: false
       });
-      //   const newState = state.todoData.concat({
-      //     label: action.label,
-      //     important: false,
-      //     id: state.todoData.length + 1,
-      //     done: false
-      //   });
-      //   console.log(newState);
       return newState;
     }
     default: {
