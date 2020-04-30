@@ -57,6 +57,4 @@ class TodoListItem extends Component {
 	}
 }
 
-// const TodoListItem = ({ label, important = false }) => {};
-
 export default TodoListItem;
