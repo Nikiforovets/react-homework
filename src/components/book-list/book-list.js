@@ -2,8 +2,14 @@ import React, { Component } from "react";
 import BookListItem from "../book-list-item";
 import { connect } from "react-redux";
 import Spinner from "../spinner";
+import ErrorIndicator from "../error-indicator";
 import { withBookstoreService } from "../hoc";
-import { booksLoaded, booksLoading, booksAddedToCard } from "../../actions";
+import {
+  booksLoaded,
+  booksLoading,
+  booksAddedToCard,
+  catchNetworkError
+} from "../../actions";
 import { compose } from "../../utils";
 
 import "./book-list.css";
@@ -24,27 +30,38 @@ const BookList = ({ books, booksAddedToCard }) => {
 
 class BookListContainer extends Component {
   componentDidMount() {
-    const { bookstoreService, booksLoaded, booksLoading } = this.props;
+    const {
+      bookstoreService,
+      booksLoaded,
+      booksLoading,
+      catchNetworkError
+    } = this.props;
     booksLoading();
-    bookstoreService.getBooks().then(data => booksLoaded(data));
+    bookstoreService
+      .getBooks()
+      .then(data => booksLoaded(data))
+      .catch(e => catchNetworkError());
   }
 
   render() {
-    const { books, loading, booksAddedToCard } = this.props;
+    const { books, loading, booksAddedToCard, networkError } = this.props;
     if (loading) return <Spinner />;
-    return <BookList books={books} booksAddedToCard={booksAddedToCard} />;
+    if (!networkError) {
+      return <BookList books={books} booksAddedToCard={booksAddedToCard} />;
+    } else return <ErrorIndicator />;
   }
 }
 
-const mapStateToProps = ({book:{ books, loading }}) => {
-  return { books, loading };
+const mapStateToProps = ({ book: { books, loading, networkError } }) => {
+  return { books, loading, networkError };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     booksLoaded: id => dispatch(booksLoaded(id)),
     booksLoading: () => dispatch(booksLoading()),
-    booksAddedToCard: id => dispatch(booksAddedToCard(id))
+    booksAddedToCard: id => dispatch(booksAddedToCard(id)),
+    catchNetworkError: () => dispatch(catchNetworkError())
   };
 };
 

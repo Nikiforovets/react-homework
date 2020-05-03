@@ -29,4 +29,28 @@ const booksRemovedFromCard = id => {
   };
 };
 
-export { booksLoaded, booksLoading, booksAddedToCard, booksRemovedFromCard };
+const booksDeletedFromCard = id => {
+  return {
+    type: "BOOKS_DELETED_FROM_CARD",
+    payload: id
+  };
+};
+
+const catchNetworkError = () => {
+  return function(dispatch) {
+    setTimeout(() => {
+      dispatch({
+        type: "NETWORK_ERROR"
+      });
+    }, 1000);
+  };
+};
+
+export {
+  booksLoaded,
+  booksLoading,
+  booksAddedToCard,
+  booksRemovedFromCard,
+  booksDeletedFromCard,
+  catchNetworkError
+};

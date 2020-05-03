@@ -1,4 +1,4 @@
-import { resolve } from "q";
+import { reject } from "q";
 
 export default class BookstoreService {
   data = [
@@ -20,10 +20,9 @@ export default class BookstoreService {
     }
   ];
   getBooks() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(this.data);
-      }, 0);
+    return new Promise((resolve, reject) => {
+      resolve(this.data);
+      //reject(new Error("Ошибка"));
     });
   }
 }

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import {
   booksAddedToCard,
   booksRemovedFromCard,
-  allBooksRemoveFromCart
+  booksDeletedFromCard
 } from "../../actions";
 import "./shopping-cart-table.css";
 
@@ -74,7 +74,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onDecrease: id => dispatch(booksRemovedFromCard(id)),
     onIncrease: id => dispatch(booksAddedToCard(id)),
-    onDelete: id => console.log(id) //dispatch(allBooksRemoveFromCart(id))
+    onDelete: id => dispatch(booksDeletedFromCard(id))
   };
 };
 export default connect(
