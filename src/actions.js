@@ -1,4 +1,12 @@
-import { ADD, SEARCH, FILTER, DELETE, DONE, IMPORTANT } from "./constants";
+import {
+  ADD,
+  SEARCH,
+  FILTER,
+  DELETE,
+  DONE,
+  IMPORTANT,
+  SET_LIST
+} from "./constants";
 
 const add = content => {
   return {
@@ -42,4 +50,19 @@ const toggleImportant = content => {
   };
 };
 
-export { add, search, filter, toggleDone, toggleDelete, toggleImportant };
+const setList = content => {
+  return {
+    type: SET_LIST,
+    data: content
+  };
+};
+
+export {
+  add,
+  search,
+  filter,
+  toggleDone,
+  toggleDelete,
+  toggleImportant,
+  setList
+};
