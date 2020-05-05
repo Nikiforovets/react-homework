@@ -1,10 +1,18 @@
-import { ADD, SEARCH, FILTER, DELETE, DONE, IMPORTANT } from "./constants";
+import {
+  ADD,
+  SEARCH,
+  FILTER,
+  DELETE,
+  DONE,
+  IMPORTANT,
+  SET_LIST
+} from "./constants";
 
 const initialState = {
   todoData: [
-    { label: "Drink Coffee", important: false, id: 1, done: false },
-    { label: "Make Awesome App", important: true, id: 2, done: false },
-    { label: "Have a lunch", important: false, id: 3, done: false }
+    // { label: "Drink Coffee", important: false, id: 1, done: false },
+    // { label: "Make Awesome App", important: true, id: 2, done: false },
+    // { label: "Have a lunch", important: false, id: 3, done: false }
   ],
   searchFilter: "",
   btnFilter: "",
@@ -63,6 +71,21 @@ const reducer = (state = initialState, action) => {
           }
           return item;
         })
+      };
+    }
+    case SET_LIST: {
+      let todoArray = [];
+      for (const key in action.data) {
+        todoArray.push({
+          label: action.data[key].title,
+          important: false,
+          id: key,
+          done: false
+        });
+      }
+      return {
+        ...state,
+        todoData: todoArray
       };
     }
     default: {
